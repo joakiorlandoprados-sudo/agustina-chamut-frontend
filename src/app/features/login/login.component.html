@@ -1,0 +1,39 @@
+<div class="login-container">
+  <form class="login-form" (ngSubmit)="submit()">
+    <h1>Agustina Chamut — Admin</h1>
+
+    <label>
+      Email
+      <input
+        type="email"
+        autocomplete="username"
+        required
+        [disabled]="loading()"
+        [ngModel]="email()"
+        (ngModelChange)="email.set($event)"
+        name="email"
+      />
+    </label>
+
+    <label>
+      Contraseña
+      <input
+        type="password"
+        autocomplete="current-password"
+        required
+        [disabled]="loading()"
+        [ngModel]="password()"
+        (ngModelChange)="password.set($event)"
+        name="password"
+      />
+    </label>
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    <button type="submit" [disabled]="loading()">
+      {{ loading() ? 'Ingresando...' : 'Ingresar' }}
+    </button>
+  </form>
+</div>

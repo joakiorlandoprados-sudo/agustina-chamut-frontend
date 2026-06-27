@@ -1,0 +1,551 @@
+/* ───────────────────────────────────────────────
+   Topbar público
+   ─────────────────────────────────────────────── */
+
+.topbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-bg);
+  border-bottom: 1px solid #EDE8E3;
+  height: 64px;
+  box-sizing: border-box;
+  flex: 0 0 64px;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--color-terra);
+}
+
+/* ───────────────────────────────────────────────
+   Layout principal: dos columnas
+   ─────────────────────────────────────────────── */
+
+.content {
+  display: flex;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.status,
+.error {
+  text-align: center;
+  padding: 2rem;
+  margin: auto;
+  font-family: 'Inter', sans-serif;
+}
+
+.error {
+  color: var(--color-terra);
+}
+
+.retry-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 0.55rem 1.25rem;
+  border: 1.5px solid var(--color-terra);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--color-terra);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.retry-btn:hover {
+  background: var(--color-terra);
+  color: white;
+}
+
+/* ───────────────────────────────────────────────
+   Columna izquierda: calendario
+   ─────────────────────────────────────────────── */
+
+.month {
+  flex: 0 0 320px;
+  background: var(--color-surface);
+  border: none;
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  flex: 0 0 auto;
+}
+
+.month-nav h2 {
+  margin: 0;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1rem;
+  text-transform: capitalize;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.month-nav button {
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 1px solid #EDE8E3;
+  border-radius: 8px;
+  background: var(--color-surface);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  color: var(--color-text-muted);
+  transition: background 0.15s, color 0.15s;
+}
+
+.month-nav button:hover {
+  background: var(--color-terra-light);
+  color: var(--color-terra);
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 4px;
+  flex: 0 0 auto;
+}
+
+.weekday {
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.25rem 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.day {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  cursor: default;
+  font-family: 'Inter', sans-serif;
+  padding: 4px;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--color-text-disabled);
+  transition: background 0.15s, color 0.15s;
+}
+
+.day.has-open {
+  color: var(--color-terra);
+  cursor: pointer;
+  background: var(--color-terra-light);
+  font-weight: 700;
+}
+
+.day.has-open:hover {
+  background: var(--color-terra);
+  color: white;
+}
+
+.day.out-of-month {
+  color: var(--color-text-disabled);
+  background: transparent;
+}
+
+.day.today {
+  font-weight: 700;
+  outline: 1px solid var(--color-terra);
+  outline-offset: -1px;
+}
+
+/* Días anteriores a hoy: aunque el backend no los devuelve, por las dudas
+   (margen de medianoche, render cacheado) los marcamos como deshabilitados
+   y los atenuamos. No clickeables. */
+.day.is-past {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.day.selected {
+  background: var(--color-terra);
+  color: white;
+  font-weight: 700;
+}
+
+.day.selected:hover {
+  background: var(--color-terra);
+}
+
+.day:disabled {
+  cursor: not-allowed;
+}
+
+.legend {
+  margin: 0.85rem 0 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-dot--open {
+  background: var(--color-terra);
+}
+
+/* ───────────────────────────────────────────────
+   Columna derecha: panel
+   ─────────────────────────────────────────────── */
+
+.panel {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  background: var(--color-surface);
+  border: none;
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  padding: 1.5rem;
+}
+
+.panel-header {
+  flex: 0 0 auto;
+  margin-bottom: 1rem;
+}
+
+.panel-header h3 {
+  margin: 0 0 0.35rem;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.panel-header .subtitle {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.empty {
+  margin: auto;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 0.95rem;
+}
+
+/* ─── Paso 1: lista de slots como botones ─── */
+
+.slots-scroll {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.slot-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.65rem;
+}
+
+.slot-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: transparent;
+  border: 1.5px solid var(--color-terra);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: var(--color-terra);
+  transition: background 0.2s, color 0.2s;
+}
+
+.slot-btn:hover {
+  background: var(--color-terra);
+  color: white;
+}
+
+.slot-time {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
+}
+
+.slot-cta {
+  font-size: 0.85rem;
+}
+
+/* ─── Paso 2: form ─── */
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--color-terra);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.back-btn:hover {
+  text-decoration: underline;
+}
+
+.slot-summary {
+  background: var(--color-terra-light);
+  border-left: 4px solid var(--color-terra);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 0 0 auto;
+}
+
+.slot-summary-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  color: var(--color-terra);
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.slot-summary-value {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.05rem;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+.form input[type='text'],
+.form input[type='tel'],
+.form input[type='email'],
+.form textarea {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #EDE8E3;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: var(--color-terra);
+  box-shadow: 0 0 0 3px rgba(196, 120, 90, 0.15);
+}
+
+.form input:disabled,
+.form textarea:disabled {
+  background: var(--color-bg);
+  color: var(--color-text-disabled);
+}
+
+.form textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.form-error {
+  margin: 0;
+  color: var(--color-terra);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  background: var(--color-terra-light);
+  border: 1px solid var(--color-terra);
+  border-radius: 8px;
+  padding: 0.65rem 0.9rem;
+}
+
+.submit-btn {
+  margin-top: auto;
+  padding: 0.85rem 1.5rem;
+  border: 1.5px solid var(--color-terra);
+  border-radius: 10px;
+  background: var(--color-terra);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #B0694D;
+  border-color: #B0694D;
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─── Paso 3: confirmación ─── */
+
+.done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.85rem;
+  margin: auto;
+  padding: 1rem;
+}
+
+.check {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--color-teal);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.done h3 {
+  margin: 0;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.done-client {
+  margin: 0;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.done-slot {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.whatsapp-btn {
+  margin-top: 1rem;
+  padding: 0.85rem 1.5rem;
+  background: var(--color-teal);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s;
+}
+
+.whatsapp-btn:hover {
+  background: #4A7777;
+}
+
+.secondary {
+  margin-top: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  background: transparent;
+  color: var(--color-terra);
+  border: 1.5px solid var(--color-terra);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.92rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.secondary:hover {
+  background: var(--color-terra);
+  color: white;
+}

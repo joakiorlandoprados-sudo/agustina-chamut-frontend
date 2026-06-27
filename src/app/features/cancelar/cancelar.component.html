@@ -1,0 +1,33 @@
+<main class="page">
+  <div class="card">
+    @switch (state()) {
+      @case ('loading') {
+        <div class="spinner" aria-hidden="true"></div>
+        <h2>Procesando cancelación...</h2>
+        <p class="muted">Esto puede tardar unos segundos.</p>
+      }
+      @case ('success') {
+        <div class="icon icon--ok" aria-hidden="true">✓</div>
+        <h2>Tu turno fue cancelado</h2>
+        <p>Si querés reservar otro horario, podés hacerlo desde acá:</p>
+        <a class="btn" routerLink="/reservar">Reservar otro turno</a>
+      }
+      @case ('already') {
+        <div class="icon icon--info" aria-hidden="true">ℹ</div>
+        <h2>Esta reserva ya fue cancelada anteriormente</h2>
+        <p>No hay nada más que hacer. Si querés un nuevo turno:</p>
+        <a class="btn" routerLink="/reservar">Ir a reservar</a>
+      }
+      @case ('past') {
+        <div class="icon icon--warn" aria-hidden="true">!</div>
+        <h2>No es posible cancelar un turno que ya pasó</h2>
+        <p>Si necesitás contactarte con la terapeuta, usá el link de la confirmación original.</p>
+      }
+      @case ('invalid') {
+        <div class="icon icon--warn" aria-hidden="true">!</div>
+        <h2>El link de cancelación no es válido o ya venció</h2>
+        <p>Si creés que es un error, contactanos y lo resolvemos.</p>
+      }
+    }
+  </div>
+</main>

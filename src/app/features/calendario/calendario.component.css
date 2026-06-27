@@ -1,0 +1,419 @@
+/* ───────────────────────────────────────────────
+   Topbar (altura fija y conocida para calc())
+   ─────────────────────────────────────────────── */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  height: 56px;
+  box-sizing: border-box;
+  flex: 0 0 56px;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.topbar button {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+/* ───────────────────────────────────────────────
+   Layout principal: dos columnas horizontales,
+   debajo del topbar, sin scroll de página.
+   ─────────────────────────────────────────────── */
+
+.content {
+  display: flex;
+  height: calc(100vh - 56px);
+  overflow: hidden;
+  gap: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.status,
+.error {
+  text-align: center;
+  padding: 2rem;
+}
+
+.error {
+  color: #c62828;
+}
+
+/* ───────────────────────────────────────────────
+   Columna izquierda: grid mensual compacto
+   ─────────────────────────────────────────────── */
+
+.month {
+  flex: 0 0 320px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  flex: 0 0 auto;
+}
+
+.month-nav h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.month-nav button {
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 2px;
+  flex: 0 0 auto;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 0.7rem;
+  color: #888;
+  text-transform: uppercase;
+  padding: 0.125rem 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.day {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  border: 1px solid #e8e8e8;
+  border-radius: 3px;
+  background: white;
+  cursor: pointer;
+  font: inherit;
+  padding: 4px;
+}
+
+.day:hover {
+  background: #f5f5f5;
+}
+
+.day.out-of-month {
+  color: #c0c0c0;
+  background: #fafafa;
+}
+
+.day.today {
+  font-weight: 700;
+  outline: 2px solid #4a90e2;
+  outline-offset: -2px;
+}
+
+.day.selected {
+  background: #4a90e2;
+  border-color: #4a90e2;
+  color: white;
+}
+
+.day.selected .dot {
+  background: white;
+}
+
+.day-num {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  margin-top: 2px;
+  display: block;
+}
+
+.dot[data-kind='open'] {
+  background: #4a90e2;
+}
+
+.dot[data-kind='busy'] {
+  background: #b0b0b0;
+}
+
+.day.selected .dot[data-kind='open'] {
+  background: white;
+}
+
+/* ───────────────────────────────────────────────
+   Columna derecha: panel de slots del día
+   ─────────────────────────────────────────────── */
+
+.day-slots {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.day-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  flex: 0 0 auto;
+}
+
+.day-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #555;
+}
+
+.add-btn {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #4a90e2;
+  border-radius: 4px;
+  background: #4a90e2;
+  color: white;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background: #3a7bc8;
+  border-color: #3a7bc8;
+}
+
+/* Contenedor con scroll propio: solo esta zona scrollea
+   si hay muchos slots. */
+.slots-scroll {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+  padding-right: 4px;
+}
+
+.slots {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.slot {
+  display: grid;
+  grid-template-columns: 7rem 6rem 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.6rem 0.875rem;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-left: 4px solid #ccc;
+  border-radius: 4px;
+}
+
+.slot[data-status='OPEN'] {
+  border-left-color: #4a90e2;
+}
+.slot[data-status='BOOKED'] {
+  border-left-color: #e2a04a;
+}
+.slot[data-status='BLOCKED'] {
+  border-left-color: #b0b0b0;
+  opacity: 0.7;
+}
+
+.time {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.badge {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  padding: 0.125rem 0.5rem;
+  border-radius: 3px;
+  background: #f0f0f0;
+  text-align: center;
+}
+
+.client {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.actions button {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.actions button:hover {
+  background: #f5f5f5;
+}
+
+.actions button.danger {
+  border-color: #c62828;
+  color: #c62828;
+}
+
+.actions button.danger:hover {
+  background: #fdecea;
+}
+
+/* ───────────────────────────────────────────────
+   Form inline de alta de turnos
+   ─────────────────────────────────────────────── */
+
+.form {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-left: 4px solid #4a90e2;
+  border-radius: 4px;
+  padding: 0.875rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 0 0 auto;
+}
+
+.form-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.form input[type='time'],
+.form input[type='number'] {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 0.9rem;
+  min-width: 7.5rem;
+}
+
+.form input:disabled {
+  background: #f5f5f5;
+  color: #888;
+}
+
+.form .toggle {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.form .toggle input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+}
+
+.form-error {
+  margin: 0;
+  color: #c62828;
+  font-size: 0.85rem;
+  background: #fdecea;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  padding: 0.4rem 0.65rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.form-actions button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.form-actions button:hover:not(:disabled) {
+  background: #f5f5f5;
+}
+
+.form-actions button.primary {
+  border-color: #4a90e2;
+  background: #4a90e2;
+  color: white;
+}
+
+.form-actions button.primary:hover:not(:disabled) {
+  background: #3a7bc8;
+  border-color: #3a7bc8;
+}
+
+.form-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,0 +1,176 @@
+<header class="topbar">
+  <h1>Reservá tu turno</h1>
+</header>
+
+<main class="content">
+  @if (loading()) {
+    <p class="status">Cargando turnos disponibles...</p>
+  } @else if (error()) {
+    <p class="error">{{ error() }}</p>
+    <button type="button" class="retry-btn" (click)="refresh()">Reintentar</button>
+  } @else {
+    <!-- ─── Columna izquierda: calendario (solo lectura) ─── -->
+    <section class="month">
+      <div class="month-nav">
+        <button type="button" (click)="prevMonth()" aria-label="Mes anterior">‹</button>
+        <h2>{{ monthLabel() }}</h2>
+        <button type="button" (click)="nextMonth()" aria-label="Mes siguiente">›</button>
+      </div>
+
+      <div class="weekdays">
+        @for (w of weekdayLabels; track w) {
+          <span class="weekday">{{ w }}</span>
+        }
+      </div>
+
+      <div class="grid">
+        @for (cell of calendarCells(); track cell.key) {
+          <button
+            type="button"
+            class="day"
+            [class.out-of-month]="!cell.inMonth"
+            [class.today]="cell.isToday"
+            [class.selected]="cell.isSelected"
+            [class.has-open]="cell.hasOpen"
+            [class.is-past]="cell.isPast"
+            [disabled]="!cell.hasOpen || cell.isPast"
+            (click)="selectDay(cell)"
+          >
+            <span class="day-num">{{ cell.date.getDate() }}</span>
+          </button>
+        }
+      </div>
+
+      <p class="legend">
+        <span class="legend-dot legend-dot--open"></span> Hay turnos disponibles
+      </p>
+    </section>
+
+    <!-- ─── Columna derecha: varía según el paso ─── -->
+    <section class="panel">
+      @switch (step()) {
+        @case ('pick-day') {
+          <div class="panel-header">
+            <h3>{{ selectedDateLabel() }}</h3>
+            <p class="subtitle">Elegí un horario disponible</p>
+          </div>
+
+          @if (openSlotsForSelected().length === 0) {
+            <p class="empty">No hay turnos disponibles para este día.</p>
+          } @else {
+            <div class="slots-scroll">
+              <ul class="slot-list">
+                @for (slot of openSlotsForSelected(); track slot.id) {
+                  <li>
+                    <button type="button" class="slot-btn" (click)="pickSlot(slot)">
+                      <span class="slot-time">{{ slot.startTime }}–{{ slot.endTime }}</span>
+                      <span class="slot-cta">Elegir →</span>
+                    </button>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        }
+
+        @case ('form') {
+          <div class="panel-header">
+            <button type="button" class="back-btn" (click)="backToPicker()">← Volver</button>
+            <h3>Tus datos</h3>
+          </div>
+
+          @if (selectedSlot(); as slot) {
+            <div class="slot-summary">
+              <span class="slot-summary-label">Turno seleccionado</span>
+              <span class="slot-summary-value">
+                {{ selectedDateLabel() }} · {{ slot.startTime }}–{{ slot.endTime }}
+              </span>
+            </div>
+          }
+
+          <form class="form" (ngSubmit)="submitBooking()">
+            <label>
+              Nombre completo
+              <input
+                type="text"
+                autocomplete="name"
+                required
+                [disabled]="formSubmitting()"
+                [ngModel]="clientName()"
+                (ngModelChange)="clientName.set($event)"
+                name="clientName"
+              />
+            </label>
+            <label>
+              Teléfono
+              <input
+                type="tel"
+                autocomplete="tel"
+                required
+                [disabled]="formSubmitting()"
+                [ngModel]="clientPhone()"
+                (ngModelChange)="clientPhone.set($event)"
+                name="clientPhone"
+              />
+            </label>
+            <label>
+              Email
+              <input
+                type="email"
+                autocomplete="email"
+                required
+                [disabled]="formSubmitting()"
+                [ngModel]="clientEmail()"
+                (ngModelChange)="clientEmail.set($event)"
+                name="clientEmail"
+              />
+            </label>
+            <label>
+              Notas (opcional)
+              <textarea
+                rows="3"
+                [disabled]="formSubmitting()"
+                [ngModel]="notes()"
+                (ngModelChange)="notes.set($event)"
+                name="notes"
+              ></textarea>
+            </label>
+
+            @if (formError()) {
+              <p class="form-error">{{ formError() }}</p>
+            }
+
+            <button type="submit" class="primary submit-btn" [disabled]="formSubmitting()">
+              {{ formSubmitting() ? 'Confirmando...' : 'Confirmar reserva' }}
+            </button>
+          </form>
+        }
+
+        @case ('done') {
+          @if (confirmed(); as c) {
+            <div class="done">
+              <div class="check">✓</div>
+              <h3>¡Reserva confirmada!</h3>
+              <p class="done-client">{{ c.clientName }}</p>
+              <p class="done-slot">{{ confirmedSlotLabel() }}</p>
+
+              <a
+                class="whatsapp-btn"
+                [href]="whatsappUrl()"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span aria-hidden="true">📲</span>
+                Avisar por WhatsApp
+              </a>
+
+              <button type="button" class="secondary" (click)="startOver()">
+                Hacer otra reserva
+              </button>
+            </div>
+          }
+        }
+      }
+    </section>
+  }
+</main>

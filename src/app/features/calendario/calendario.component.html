@@ -1,0 +1,165 @@
+<header class="topbar">
+  <h1>Calendario de reservas</h1>
+  <button type="button" (click)="logout()">Cerrar sesión</button>
+</header>
+
+<main class="content">
+  @if (loading()) {
+    <p class="status">Cargando...</p>
+  } @else if (error()) {
+    <p class="error">{{ error() }}</p>
+    <button type="button" (click)="refresh()">Reintentar</button>
+  } @else {
+    <!-- ─── Columna izquierda: grid mensual compacto ─── -->
+    <section class="month">
+      <div class="month-nav">
+        <button type="button" (click)="prevMonth()" aria-label="Mes anterior">‹</button>
+        <h2>{{ monthLabel() }}</h2>
+        <button type="button" (click)="nextMonth()" aria-label="Mes siguiente">›</button>
+      </div>
+
+      <div class="weekdays">
+        @for (w of weekdayLabels; track w) {
+          <span class="weekday">{{ w }}</span>
+        }
+      </div>
+
+      <div class="grid">
+        @for (cell of calendarCells(); track cell.key) {
+          <button
+            type="button"
+            class="day"
+            [class.out-of-month]="!cell.inMonth"
+            [class.today]="cell.isToday"
+            [class.selected]="cell.isSelected"
+            (click)="selectDay(cell)"
+          >
+            <span class="day-num">{{ cell.date.getDate() }}</span>
+            @if (cell.indicator !== 'none') {
+              <span class="dot" [attr.data-kind]="cell.indicator" aria-hidden="true"></span>
+            }
+          </button>
+        }
+      </div>
+    </section>
+
+    <!-- ─── Columna derecha: panel de slots del día seleccionado ─── -->
+    <section class="day-slots">
+      <div class="day-header">
+        <h3>{{ selectedDateLabel() }}</h3>
+        @if (!formOpen()) {
+          <button type="button" class="add-btn" (click)="openForm()">＋ Agregar turno</button>
+        }
+      </div>
+
+      @if (formOpen()) {
+        <form class="form" (ngSubmit)="submitForm()">
+          <div class="form-row">
+            <label>
+              Hora inicio
+              <input
+                type="time"
+                required
+                [disabled]="formSubmitting()"
+                [ngModel]="formStart()"
+                (ngModelChange)="formStart.set($event)"
+                name="startTime"
+              />
+            </label>
+            <label>
+              Hora fin
+              <input
+                type="time"
+                required
+                [disabled]="formSubmitting()"
+                [ngModel]="formEnd()"
+                (ngModelChange)="formEnd.set($event)"
+                name="endTime"
+              />
+            </label>
+          </div>
+
+          <label class="toggle">
+            <input
+              type="checkbox"
+              [disabled]="formSubmitting()"
+              [checked]="formMode() === 'generate'"
+              (change)="onToggleGenerate($any($event.target).checked)"
+            />
+            Generar varios turnos
+          </label>
+
+          @if (formMode() === 'generate') {
+            <div class="form-row">
+              <label>
+                Duración por turno (minutos)
+                <input
+                  type="number"
+                  min="5"
+                  step="5"
+                  required
+                  [disabled]="formSubmitting()"
+                  [ngModel]="formDuration()"
+                  (ngModelChange)="formDuration.set(+$event)"
+                  name="durationMinutes"
+                />
+              </label>
+            </div>
+          }
+
+          @if (formError()) {
+            <p class="form-error">{{ formError() }}</p>
+          }
+
+          <div class="form-actions">
+            <button
+              type="button"
+              [disabled]="formSubmitting()"
+              (click)="closeForm()"
+            >Cancelar</button>
+            <button
+              type="submit"
+              class="primary"
+              [disabled]="formSubmitting()"
+            >
+              @if (formMode() === 'generate') {
+                {{ formSubmitting() ? 'Generando...' : 'Generar turnos' }}
+              } @else {
+                {{ formSubmitting() ? 'Creando...' : 'Crear turno' }}
+              }
+            </button>
+          </div>
+        </form>
+      }
+
+      <div class="slots-scroll">
+        @if (slotsForSelected().length === 0) {
+          <p class="status">Sin turnos para este día.</p>
+        } @else {
+          <ul class="slots">
+            @for (slot of slotsForSelected(); track slot.id) {
+              <li class="slot" [attr.data-status]="slot.status">
+                <span class="time">{{ slot.startTime }}–{{ slot.endTime }}</span>
+                <span class="badge">{{ slot.status }}</span>
+                <span class="actions">
+                  @if (slot.status === 'OPEN') {
+                    <button type="button" (click)="block(slot)">Bloquear</button>
+                  } @else if (slot.status === 'BLOCKED') {
+                    <button type="button" (click)="unblock(slot)">Reabrir</button>
+                  } @else if (slot.status === 'BOOKED' && slot.booking) {
+                    <span class="client">
+                      {{ slot.booking.clientName }} · {{ slot.booking.clientPhone }}
+                    </span>
+                    <button type="button" class="danger" (click)="cancelBooking(slot)">
+                      Cancelar reserva
+                    </button>
+                  }
+                </span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </section>
+  }
+</main>
