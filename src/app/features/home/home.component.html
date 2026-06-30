@@ -14,7 +14,7 @@
       <a href="#sobre-mi">Sobre mí</a>
       <a href="#que-son">¿Qué son?</a>
       <a href="#sesion">Sesión</a>
-      <a class="navbar-cta" href="#reservar">Reservar</a>
+      <a class="navbar-cta" routerLink="/reservar">Reservar</a>
     </nav>
   </div>
 </header>
@@ -23,19 +23,19 @@
 <section class="hero" id="top" #revealSection>
   <div class="hero-grid">
     <div class="hero-text">
-      <h1 class="hero-title">Saná los vínculos que te forman</h1>
-      <p class="hero-author">Agustina Chamut</p>
-      <p class="hero-tagline">
+      <h1 class="hero-title reveal reveal--title" #reveal>Sanación familiar<br><em>desde adentro</em></h1>
+      <p class="hero-author reveal reveal--text" #reveal>Agustina Chamut</p>
+      <p class="hero-tagline reveal reveal--text" #reveal>
         Constelaciones familiares · Terapia holística · Online
       </p>
 
-      <div class="hero-actions">
+      <div class="hero-actions reveal reveal--text" #reveal>
         <a class="btn btn--filled" routerLink="/reservar">Reservar un turno</a>
         <a class="btn btn--outline" href="#sobre-mi">Saber más ↓</a>
       </div>
     </div>
 
-    <div class="hero-visual" aria-hidden="true">
+    <div class="hero-visual reveal reveal--image" aria-hidden="true" #reveal>
       <img
         class="hero-photo"
         src="img/agustina-chamut.jpg"
@@ -62,18 +62,18 @@
 <section id="sobre-mi" class="about" #revealSection>
   <div class="about-inner">
     <!--<div class="about-photo" aria-hidden="true">AC</div>-->
-    <img class="about-photo" src="img/agustina-chamut.jpg" alt="Agustina Chamut"/>
+    <img class="about-photo reveal reveal--image" src="img/agustina-chamut.jpg" alt="Agustina Chamut" #reveal/>
     <div class="about-text">
-      <h2 class="section-title about-title">Hola, soy Agustina</h2>
-      <p>
+      <h2 class="section-title about-title reveal reveal--title" #reveal><em>Hola,</em> soy Agustina</h2>
+      <p class="reveal reveal--text" #reveal>
         Soy terapeuta holística especializada en constelaciones familiares,
         una herramienta poderosa para sanar vínculos y patrones heredados.
       </p>
-      <p>
+      <p class="reveal reveal--text" #reveal>
         Acompaño a personas de todo el mundo hispanohablante en procesos de
         autoconocimiento, sanación emocional y reconexión con su historia familiar.
       </p>
-      <p>
+      <p class="reveal reveal--text" #reveal>
         Cada sesión es un espacio seguro, confidencial y profundamente
         transformador.
       </p>
@@ -84,10 +84,10 @@
 <!-- ─── 3. QUÉ SON LAS CONSTELACIONES ─── -->
 <section id="que-son" class="que-es" #revealSection>
   <div class="container">
-    <h2 class="section-title center">¿Qué son las constelaciones familiares?</h2>
+    <h2 class="section-title center reveal reveal--title" #reveal>¿Qué son las<br><em>constelaciones familiares?</em></h2>
 
     <div class="cards-3">
-      <article class="card">
+      <article class="card reveal reveal--card" #reveal>
         <div class="card-icon" aria-hidden="true">
           <!-- Árbol: raíces + copa estilizada -->
           <svg viewBox="0 0 48 48" width="40" height="40">
@@ -108,7 +108,7 @@
         </p>
       </article>
 
-      <article class="card">
+      <article class="card reveal reveal--card" #reveal>
         <div class="card-icon" aria-hidden="true">
           <!-- Estrella / destello -->
           <svg viewBox="0 0 48 48" width="40" height="40">
@@ -129,7 +129,7 @@
         </p>
       </article>
 
-      <article class="card">
+      <article class="card reveal reveal--card" #reveal>
         <div class="card-icon" aria-hidden="true">
           <!-- Corazón -->
           <svg viewBox="0 0 48 48" width="40" height="40">
@@ -156,22 +156,22 @@
 <!-- ─── 4. CÓMO FUNCIONA ─── -->
 <section id="sesion" class="como-funciona" #revealSection>
   <div class="container">
-    <h2 class="section-title center">¿Cómo es una sesión?</h2>
+    <h2 class="section-title center reveal reveal--title" #reveal>¿Cómo es <em>una sesión?</em></h2>
 
     <ol class="steps">
-      <li class="step">
+      <li class="step reveal reveal--card" #reveal>
         <span class="step-number">1</span>
         <h3 class="step-title">Reservá tu turno online</h3>
       </li>
-      <li class="step">
+      <li class="step reveal reveal--card" #reveal>
         <span class="step-number">2</span>
         <h3 class="step-title">Agustina te escribe para preparar la sesión</h3>
       </li>
-      <li class="step">
+      <li class="step reveal reveal--card" #reveal>
         <span class="step-number">3</span>
         <h3 class="step-title">Nos encontramos por videollamada</h3>
       </li>
-      <li class="step">
+      <li class="step reveal reveal--card" #reveal>
         <span class="step-number">4</span>
         <h3 class="step-title">Integrás la experiencia a tu ritmo</h3>
       </li>
@@ -186,10 +186,10 @@
 <!-- ─── 5. PREGUNTAS FRECUENTES ─── -->
 <section class="faq" #revealSection>
   <div class="container">
-    <h2 class="section-title center">Preguntas frecuentes</h2>
+    <h2 class="section-title center reveal reveal--title" #reveal>Preguntas frecuentes</h2>
 
     <div class="faq-list">
-      <details class="faq-item">
+      <details class="faq-item reveal reveal--card" #reveal>
         <summary>¿Necesito experiencia previa?</summary>
         <p>
           No. Las constelaciones no requieren conocimiento previo ni
@@ -197,19 +197,19 @@
         </p>
       </details>
 
-      <details class="faq-item">
+      <details class="faq-item reveal reveal--card" #reveal>
         <summary>¿Funciona en formato online?</summary>
         <p>
           Sí. La modalidad online tiene la misma profundidad que la presencial.
         </p>
       </details>
 
-      <details class="faq-item">
+      <details class="faq-item reveal reveal--card" #reveal>
         <summary>¿Cuánto dura una sesión?</summary>
         <p>Entre 50 y 60 minutos.</p>
       </details>
 
-      <details class="faq-item">
+      <details class="faq-item reveal reveal--card" #reveal>
         <summary>¿Cómo me preparo?</summary>
         <p>
           Solo necesitás un lugar tranquilo y conexión a internet. Agustina
@@ -223,10 +223,10 @@
 <!-- ─── 6. TESTIMONIOS ─── -->
 <section class="testimonios" #revealSection>
   <div class="container">
-    <h2 class="section-title center">Lo que dicen quienes ya lo vivieron</h2>
+    <h2 class="section-title center reveal reveal--title" #reveal>Lo que dicen <em>quienes ya lo vivieron</em></h2>
 
     <div class="cards-3">
-      <article class="testimonial">
+      <article class="testimonial reveal reveal--card" #reveal>
         <span class="quote-mark" aria-hidden="true">&ldquo;</span>
         <blockquote class="quote-text">
           Fue una experiencia que no tengo palabras para describir. Salí
@@ -235,7 +235,7 @@
         <p class="quote-author">María L., México</p>
       </article>
 
-      <article class="testimonial">
+      <article class="testimonial reveal reveal--card" #reveal>
         <span class="quote-mark" aria-hidden="true">&ldquo;</span>
         <blockquote class="quote-text">
           Llegué con dudas y volví con claridad. Agustina crea un espacio
@@ -244,7 +244,7 @@
         <p class="quote-author">Carlos R., Argentina</p>
       </article>
 
-      <article class="testimonial">
+      <article class="testimonial reveal reveal--card" #reveal>
         <span class="quote-mark" aria-hidden="true">&ldquo;</span>
         <blockquote class="quote-text">
           Nunca pensé que una sola sesión pudiera mover tanto.
@@ -259,9 +259,9 @@
 <!-- ─── 7. CTA FINAL ─── -->
 <section id="reservar" class="cta-final" #revealSection>
   <div class="container center">
-    <h2 class="cta-final-title">¿Estás listo para comenzar?</h2>
-    <p class="cta-final-sub">Los turnos son limitados. Reservá el tuyo hoy.</p>
-    <a class="btn btn--white" routerLink="/reservar">Reservar mi turno</a>
+    <h2 class="cta-final-title reveal reveal--title" #reveal>¿Estás lista para <em>comenzar?</em></h2>
+    <p class="cta-final-sub reveal reveal--text" #reveal>Los turnos son limitados. Reservá el tuyo hoy.</p>
+    <a class="btn btn--white reveal reveal--text" routerLink="/reservar" #reveal>Reservar mi turno</a>
   </div>
 </section>
 

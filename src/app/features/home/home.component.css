@@ -7,7 +7,7 @@
   display: block;
   background: var(--color-bg);
   color: var(--color-text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -31,44 +31,143 @@ html {
 
 .section-title {
   margin: 0 0 2.25rem;
-  font-family: 'Lora', Georgia, serif;
-  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
   font-size: clamp(1.6rem, 3.5vw, 2.2rem);
   color: var(--color-text);
-  letter-spacing: 0.2px;
-  line-height: 1.25;
+  letter-spacing: -0.2px;
+  line-height: 1.2;
 }
 
 .section-title.center {
   text-align: center;
 }
 
-/* ─── Animación de entrada (IntersectionObserver → .visible) ─── */
-
-[data-reveal-section],
-section,
-footer.footer {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+/* Acento italic dentro de h1/h2 del Home: la palabra destacada
+   se ve en Playfair Display italic terra. */
+h1 em,
+h2 em,
+.hero-title em,
+.section-title em,
+.about-title em,
+.cta-final-title em {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--color-terra);
 }
 
-section.visible,
-footer.footer.visible {
+/* ───────────────────────────────────────────────
+   Animaciones de scroll (IntersectionObserver → .visible)
+
+   Cada elemento con .reveal arranca en un estado inicial (opacity 0
+   + transform según el tipo) y se anima a su posición final cuando
+   entra en el viewport. El observer agrega .visible y des-observa
+   el elemento (one-shot). Si JS falla o el usuario pide reduced
+   motion, los .reveal se muestran tal cual sin animar.
+   ─────────────────────────────────────────────── */
+
+.reveal {
+  opacity: 0;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  will-change: opacity, transform;
+}
+
+/* Títulos: entran desde la izquierda. */
+.reveal--title {
+  transform: translateX(-40px);
+  transition-duration: 0.6s;
+}
+
+.reveal--title.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Texto de cuerpo: fade con un sutil translateY, arranca 0.1s
+   después que el título de su sección (al ser nth-child(2) dentro
+   del contenedor de la sección, el delay se logra con transition-delay
+   relativo al primer reveal de la misma sección; acá el delay es
+   absoluto y se aplica uniformemente al texto). */
+.reveal--text {
+  transform: translateY(20px);
+  transition-duration: 0.5s;
+  transition-delay: 0.1s;
+}
+
+.reveal--text.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+/* Cards: fade con translateY. nth-child hace el stagger 0.1s, 0.2s,
+   0.3s... hasta 6 elementos. */
+.reveal--card {
+  transform: translateY(30px);
+  transition-duration: 0.6s;
+}
 
-  section,
-  footer.footer {
-    opacity: 1;
-    transform: none;
-    transition: none;
+.reveal--card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Imagen "sobre mí": entra desde la derecha. */
+.reveal--image {
+  transform: translateX(40px);
+  transition-duration: 0.7s;
+}
+
+.reveal--image.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Stagger de cards y steps dentro de su lista. Usamos el nth-of-type
+   del contenedor padre (`.cards-3`, `.steps`, `.faq-list`) para
+   que el delay sea relativo entre hermanos. */
+.cards-3 .reveal--card:nth-of-type(1),
+.steps .reveal--card:nth-of-type(1),
+.faq-list .reveal--card:nth-of-type(1) {
+  transition-delay: 0s;
+}
+.cards-3 .reveal--card:nth-of-type(2),
+.steps .reveal--card:nth-of-type(2),
+.faq-list .reveal--card:nth-of-type(2) {
+  transition-delay: 0.1s;
+}
+.cards-3 .reveal--card:nth-of-type(3),
+.steps .reveal--card:nth-of-type(3),
+.faq-list .reveal--card:nth-of-type(3) {
+  transition-delay: 0.2s;
+}
+.cards-3 .reveal--card:nth-of-type(4),
+.steps .reveal--card:nth-of-type(4),
+.faq-list .reveal--card:nth-of-type(4) {
+  transition-delay: 0.3s;
+}
+.cards-3 .reveal--card:nth-of-type(5),
+.steps .reveal--card:nth-of-type(5),
+.faq-list .reveal--card:nth-of-type(5) {
+  transition-delay: 0.4s;
+}
+.cards-3 .reveal--card:nth-of-type(6),
+.steps .reveal--card:nth-of-type(6),
+.faq-list .reveal--card:nth-of-type(6) {
+  transition-delay: 0.5s;
+}
+
+/* Accesibilidad: si el usuario pide reducir movimiento, anulamos
+   todas las animaciones. El contenido aparece en su posición final. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal--title,
+  .reveal--text,
+  .reveal--card,
+  .reveal--image {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 
@@ -78,8 +177,8 @@ footer.footer.visible {
   display: inline-block;
   padding: 0.95rem 2rem;
   border-radius: 10px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
   font-size: 1rem;
   letter-spacing: 0.2px;
   text-decoration: none;
@@ -190,12 +289,12 @@ footer.footer.visible {
 }
 
 .navbar-links a {
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
   font-size: 0.95rem;
   color: var(--color-text);
   text-decoration: none;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.1px;
   position: relative;
   padding: 0.25rem 0;
   transition: color 0.2s ease;
@@ -289,19 +388,19 @@ footer.footer.visible {
 
 .hero-title {
   margin: 0;
-  font-family: 'Lora', Georgia, serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 700;
   font-size: clamp(2rem, 5vw, 3.4rem);
   color: var(--color-text);
-  letter-spacing: -0.2px;
+  letter-spacing: -0.3px;
   line-height: 1.1;
   max-width: 18ch;
 }
 
 .hero-author {
   margin: 0;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
   font-size: 1.1rem;
   color: var(--color-terra);
   letter-spacing: 0.3px;
@@ -309,7 +408,7 @@ footer.footer.visible {
 
 .hero-tagline {
   margin: 0 0 0.5rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 300;
   font-size: clamp(1rem, 2vw, 1.15rem);
   color: var(--color-text-muted);
@@ -408,8 +507,9 @@ footer.footer.visible {
 
 .about-text p {
   margin: 0 0 1rem;
-  font-family: 'Lora', Georgia, serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 1.05rem;
+  font-weight: 300;
   line-height: 1.7;
   color: var(--color-text);
 }
@@ -453,15 +553,17 @@ footer.footer.visible {
 
 .card-title {
   margin: 0 0 0.6rem;
-  font-family: 'Lora', Georgia, serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 600;
   font-size: 1.2rem;
   color: var(--color-text);
+  letter-spacing: -0.2px;
 }
 
 .card-desc {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
   font-size: 0.98rem;
   line-height: 1.55;
   color: var(--color-text-muted);
@@ -505,7 +607,7 @@ footer.footer.visible {
   border-radius: 50%;
   background: var(--color-terra);
   color: #fff;
-  font-family: 'Lora', Georgia, serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 700;
   font-size: 1.05rem;
   flex-shrink: 0;
@@ -513,11 +615,12 @@ footer.footer.visible {
 
 .step-title {
   margin: 0;
-  font-family: 'Lora', Georgia, serif;
-  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
   font-size: 1.05rem;
   line-height: 1.4;
   color: var(--color-text);
+  letter-spacing: -0.1px;
 }
 
 .steps-cta {
@@ -556,8 +659,8 @@ footer.footer.visible {
   list-style: none;
   cursor: pointer;
   padding: 1.1rem 1.4rem;
-  font-family: 'Lora', Georgia, serif;
-  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
   font-size: 1.05rem;
   color: var(--color-text);
   display: flex;
@@ -573,7 +676,7 @@ footer.footer.visible {
 
 .faq-item > summary::after {
   content: '+';
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 300;
   font-size: 1.6rem;
   line-height: 1;
@@ -589,7 +692,8 @@ footer.footer.visible {
 .faq-item > p {
   margin: 0;
   padding: 0 1.4rem 1.25rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
   font-size: 0.98rem;
   line-height: 1.6;
   color: var(--color-text-muted);
@@ -620,7 +724,7 @@ footer.footer.visible {
   position: absolute;
   top: -10px;
   left: 18px;
-  font-family: 'Lora', Georgia, serif;
+  font-family: 'Playfair Display', Georgia, serif;
   font-size: 5rem;
   line-height: 1;
   color: var(--color-terra-light);
@@ -630,18 +734,19 @@ footer.footer.visible {
 
 .quote-text {
   margin: 0 0 1rem;
-  font-family: 'Lora', Georgia, serif;
+  font-family: 'Playfair Display', Georgia, serif;
   font-style: italic;
-  font-size: 1.02rem;
-  line-height: 1.6;
+  font-weight: 400;
+  font-size: 1.05rem;
+  line-height: 1.55;
   color: var(--color-text);
   position: relative;
 }
 
 .quote-author {
   margin: 0;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
   font-size: 0.9rem;
   color: var(--color-terra);
   letter-spacing: 0.3px;
@@ -657,15 +762,16 @@ footer.footer.visible {
 
 .cta-final-title {
   margin: 0 0 0.75rem;
-  font-family: 'Lora', Georgia, serif;
-  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   line-height: 1.2;
+  letter-spacing: -0.3px;
 }
 
 .cta-final-sub {
   margin: 0 0 2rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 300;
   font-size: clamp(1rem, 2vw, 1.15rem);
   color: rgba(255, 255, 255, 0.9);
@@ -729,14 +835,14 @@ footer.footer.visible {
 
 .footer-copy {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 0.85rem;
   color: var(--color-text);
 }
 
 .footer-loc {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 300;
   font-size: 0.78rem;
   color: var(--color-text-muted);
