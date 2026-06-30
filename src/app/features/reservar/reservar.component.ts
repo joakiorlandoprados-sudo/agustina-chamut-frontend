@@ -133,9 +133,21 @@ export class ReservarComponent implements OnInit {
     return `${MONTH_NAMES[d.getMonth()]} ${d.getFullYear()}`;
   });
 
-  /** Slots OPEN del día seleccionado, ordenados por hora. */
+  /** Slots OPEN del dia seleccionado, ordenados por hora.
+   *  Tercera capa de defensa: aunque el render y el handler rechacen
+   *  celdas de otro mes, si por algun motivo selectedDate quedo
+   *  apuntando a un mes distinto al que se esta navegando, devolvemos
+   *  lista vacia para que el panel no muestre slots "fantasma". */
   readonly openSlotsForSelected = computed<Slot[]>(() => {
-    const key = this.dateKey(this.selectedDate());
+    const selected = this.selectedDate();
+    const current = this.currentMonth();
+    if (
+      selected.getFullYear() !== current.getFullYear() ||
+      selected.getMonth() !== current.getMonth()
+    ) {
+      return [];
+    }
+    const key = this.dateKey(selected);
     return this.openSlots()
       .filter((s) => s.date.slice(0, 10) === key)
       .sort((a, b) => a.startTime.localeCompare(b.startTime));
@@ -193,9 +205,14 @@ export class ReservarComponent implements OnInit {
   }
 
   selectDay(cell: CalendarCell): void {
+    // Defensa de tres capas contra dias fuera del mes visible:
+    //  1. el template deshabilita el boton si !inMonth
+    //  2. el panel de slots rechaza fechas de otro mes
+    //  3. aca, el handler: si por algun motivo llega un click en una
+    //     celda de otro mes (DOM manipulado, race condition, etc.),
+    //     no cambiamos selectedDate.
+    if (!cell.inMonth) return;
     if (!cell.hasOpen) return;
-    // Defensa adicional: aunque el backend filtra los slots pasados, si llega
-    // un día anterior al cargar la grilla no dejamos seleccionarlo.
     if (cell.isPast) return;
     this.selectedDate.set(this.atMidnight(cell.date));
   }

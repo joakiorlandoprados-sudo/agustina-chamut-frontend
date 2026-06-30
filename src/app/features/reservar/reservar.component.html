@@ -31,9 +31,9 @@
             [class.out-of-month]="!cell.inMonth"
             [class.today]="cell.isToday"
             [class.selected]="cell.isSelected"
-            [class.has-open]="cell.hasOpen"
+            [class.has-open]="cell.hasOpen && cell.inMonth"
             [class.is-past]="cell.isPast"
-            [disabled]="!cell.hasOpen || cell.isPast"
+            [disabled]="!cell.hasOpen || cell.isPast || !cell.inMonth"
             (click)="selectDay(cell)"
           >
             <span class="day-num">{{ cell.date.getDate() }}</span>
