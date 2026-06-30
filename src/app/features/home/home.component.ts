@@ -52,9 +52,10 @@ import { RouterLink } from '@angular/router';
 export class HomeComponent implements AfterViewInit, OnDestroy {
   /**
    * Cada `<section>` que debe animarse al entrar al viewport.
-   * Marcadas con `data-reveal` en el template (la animación interna se
-   * delega a los `.reveal` hijos; las secciones no necesitan animar
-   * ellas mismas en este rediseño).
+   * Marcadas con `#revealSection` en el template. Las animaciones
+   * internas se delegan a los `.reveal` hijos; el hero NO usa
+   * este sistema porque su entrada corre al cargar via @keyframes
+   * CSS (ver bloque "HERO - Secuencia de entrada" en el CSS).
    */
   @ViewChildren('revealSection')
   private revealSections!: QueryList<ElementRef<HTMLElement>>;
