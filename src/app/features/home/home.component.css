@@ -57,6 +57,16 @@ h2 em,
   color: var(--color-terra);
 }
 
+/* Excepcion: el <em> dentro del titulo del CTA final lleva
+   dorado claro en vez de aubergine, porque el fondo de esa
+   seccion es un degradado aubergine y el terra se perderia.
+   El resto de los <em> (sobre fondo claro) siguen en terra. */
+.cta-final .reveal--title em,
+.cta-final-title em {
+  color: var(--color-gold-light);
+  font-style: italic;
+}
+
 /* ───────────────────────────────────────────────
    Animaciones de scroll (IntersectionObserver → .visible)
 
