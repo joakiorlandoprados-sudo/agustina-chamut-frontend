@@ -1,9 +1,9 @@
 :host {
   display: block;
   min-height: 100vh;
-  background: #f7f5f1;
-  color: #2b2b2b;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .page {
@@ -15,9 +15,9 @@
 }
 
 .card {
-  background: #ffffff;
+  background: var(--color-surface);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-soft);
   padding: 32px 28px;
   max-width: 480px;
   width: 100%;
@@ -28,17 +28,17 @@ h2 {
   margin: 12px 0 8px;
   font-size: 20px;
   font-weight: 600;
-  color: #2b2b2b;
+  color: var(--color-text);
 }
 
 p {
   margin: 8px 0;
   line-height: 1.5;
-  color: #4a4a4a;
+  color: var(--color-text-muted);
   font-size: 15px;
 }
 
-.muted { color: #7a7a7a; }
+.muted { color: var(--color-text-disabled); }
 
 .icon {
   display: inline-flex;
@@ -52,29 +52,30 @@ p {
   color: #ffffff;
   margin: 0 auto 8px;
 }
-.icon--ok   { background: #4a5d4f; }
-.icon--warn { background: #b5651d; }
-.icon--info { background: #4a5d4f; }
+.icon--ok   { background: var(--color-teal); }
+.icon--warn { background: var(--color-gold); }
+.icon--info { background: var(--color-teal); }
 
 .btn {
   display: inline-block;
   margin-top: 18px;
-  background: #4a5d4f;
+  background: var(--color-terra);
   color: #ffffff;
   text-decoration: none;
   padding: 12px 22px;
   border-radius: 8px;
   font-weight: 600;
   font-size: 14px;
+  transition: background 0.2s;
 }
-.btn:hover { background: #3d4d42; }
+.btn:hover { background: #351932; }
 
 .spinner {
   width: 40px;
   height: 40px;
   margin: 4px auto 14px;
-  border: 3px solid #e0e0e0;
-  border-top-color: #4a5d4f;
+  border: 3px solid var(--color-text-disabled);
+  border-top-color: var(--color-terra);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }

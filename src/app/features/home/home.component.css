@@ -213,8 +213,8 @@ h2 em,
 }
 
 .btn--filled:hover {
-  background: #B0694D;
-  border-color: #B0694D;
+  background: #351932;
+  border-color: #351932;
 }
 
 .btn--outline {
@@ -344,7 +344,7 @@ h2 em,
 }
 
 .navbar-cta:hover {
-  background: #B0694D;
+  background: #351932;
   color: #fff !important;
 }
 
@@ -362,7 +362,7 @@ h2 em,
   justify-content: center;
   text-align: center;
   padding: 5.5rem 1.5rem 3rem;
-  background: linear-gradient(180deg, var(--color-bg) 0%, #EDE0D4 100%);
+  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-terra-light) 100%);
   position: relative;
 }
 
@@ -451,7 +451,7 @@ h2 em,
   object-fit: cover;
   object-position: center top;
   border-radius: 50% 50% 50% 50% / 42% 42% 58% 58%;
-  box-shadow: 0 20px 60px rgba(193, 115, 90, 0.2);
+  box-shadow: 0 20px 60px rgba(74, 37, 69, 0.25);
 }
 
 .hero-arrow {
@@ -632,11 +632,17 @@ h2 em,
   border-radius: 140px 140px 120px 120px;
   object-fit: cover;
   object-position: center top;
-  border: none;
+  border: 3px solid transparent;
   background: transparent;
-  box-shadow: 0 8px 32px rgba(196, 120, 90, 0.18);
+  box-shadow: 0 8px 32px rgba(74, 37, 69, 0.18);
   display: block;
   flex-shrink: 0;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-photo:hover {
+  border-color: var(--color-gold);
+  box-shadow: 0 8px 32px rgba(184, 147, 47, 0.28);
 }
 
 .about-text {
@@ -667,7 +673,7 @@ h2 em,
 
 .que-es {
   padding: 5rem 0;
-  background: #EDE0D4;
+  background: var(--color-terra-light);
 }
 
 .cards-3 {
@@ -848,7 +854,7 @@ h2 em,
 
 .testimonios {
   padding: 5rem 0;
-  background: #EDE0D4;
+  background: var(--color-terra-light);
 }
 
 .testimonial {
@@ -872,7 +878,8 @@ h2 em,
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 5rem;
   line-height: 1;
-  color: var(--color-terra-light);
+  color: var(--color-gold);
+  opacity: 0.55;
   pointer-events: none;
   user-select: none;
 }
@@ -901,7 +908,7 @@ h2 em,
 
 .cta-final {
   padding: 5rem 1.5rem;
-  background: linear-gradient(135deg, var(--color-terra) 0%, #B0694D 100%);
+  background: linear-gradient(135deg, var(--color-terra) 0%, #351932 100%);
   color: #fff;
 }
 
@@ -927,7 +934,7 @@ h2 em,
 .footer {
   padding: 3rem 1.5rem 2rem;
   background: var(--color-bg);
-  border-top: 1px solid #EDE8E3;
+  border-top: 1px solid var(--color-gold);
   display: flex;
   flex-direction: column;
   align-items: center;

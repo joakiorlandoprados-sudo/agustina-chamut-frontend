@@ -6,15 +6,17 @@
    ─────────────────────────────────────────────── */
 
 :root {
-  --color-bg: #FAF7F4;
+  --color-bg: #FAF8F4;
   --color-surface: #FFFFFF;
-  --color-terra: #C4785A;
-  --color-terra-light: #F0E0D6;
-  --color-teal: #5A8A8A;
-  --color-text: #2C2420;
-  --color-text-muted: #8C7B72;
-  --color-text-disabled: #C8C0B8;
-  --shadow-soft: 0 2px 16px rgba(44, 36, 32, 0.08);
+  --color-terra: #4A2545;        /* antes terracota, ahora aubergine */
+  --color-terra-light: #E8DCE6;  /* versión clara del aubergine */
+  --color-teal: #1B4D3E;         /* esmeralda profundo */
+  --color-gold: #B8932F;         /* NUEVO: acento dorado */
+  --color-gold-light: #F2E4BC;
+  --color-text: #241B22;
+  --color-text-muted: #6B5A68;
+  --color-text-disabled: #C9BDC6;
+  --shadow-soft: 0 2px 16px rgba(36, 27, 34, 0.10);
 }
 
 /* Reset mínimo + tipografía */

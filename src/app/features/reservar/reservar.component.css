@@ -8,7 +8,7 @@
   align-items: center;
   padding: 0.75rem 1.5rem;
   background: var(--color-bg);
-  border-bottom: 1px solid #EDE8E3;
+  border-bottom: 1px solid var(--color-terra-light);
   height: 64px;
   box-sizing: border-box;
   flex: 0 0 64px;
@@ -104,7 +104,7 @@
 .month-nav button {
   width: 1.85rem;
   height: 1.85rem;
-  border: 1px solid #EDE8E3;
+  border: 1px solid var(--color-terra-light);
   border-radius: 8px;
   background: var(--color-surface);
   font-size: 1rem;
@@ -397,7 +397,7 @@
 .form input[type='email'],
 .form textarea {
   padding: 0.6rem 0.75rem;
-  border: 1px solid #EDE8E3;
+  border: 1px solid var(--color-terra-light);
   border-radius: 8px;
   font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
@@ -410,7 +410,7 @@
 .form textarea:focus {
   outline: none;
   border-color: var(--color-terra);
-  box-shadow: 0 0 0 3px rgba(196, 120, 90, 0.15);
+  box-shadow: 0 0 0 3px rgba(74, 37, 69, 0.15);
 }
 
 .form input:disabled,
@@ -450,8 +450,8 @@
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: #B0694D;
-  border-color: #B0694D;
+  background: #351932;
+  border-color: #351932;
 }
 
 .submit-btn:disabled {
@@ -528,7 +528,7 @@
 }
 
 .whatsapp-btn:hover {
-  background: #4A7777;
+  background: #143A2E;
 }
 
 .secondary {
@@ -548,4 +548,51 @@
 .secondary:hover {
   background: var(--color-terra);
   color: white;
+}
+
+/* ───────────────────────────────────────────────
+   Mobile: layout de una columna
+   ─────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .topbar {
+    padding: 0.75rem 1rem;
+  }
+
+  .topbar h1 {
+    font-size: 1.15rem;
+  }
+
+  .content {
+    flex-direction: column;
+    height: auto;
+    min-height: calc(100vh - 64px);
+    overflow: visible;
+    padding: 0.75rem;
+    gap: 0.75rem;
+    max-width: 100%;
+  }
+
+  .month {
+    flex: 0 0 auto;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+
+  .panel {
+    flex: 0 0 auto;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+
+  .day {
+    height: 42px;
+    font-size: 0.9rem;
+  }
+
+  .panel-header h3 {
+    font-size: 1.2rem;
+  }
 }
