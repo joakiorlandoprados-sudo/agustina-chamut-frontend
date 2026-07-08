@@ -1161,12 +1161,11 @@ h2 em,
   }
 
   /* Imagen circular de constelaciones del hero: max 90vw en mobile,
-     con margin-top de 24px para separarla visualmente del bloque
-     de texto. */
+     margin-top 0 para que quede pegada al bloque de texto. */
   .hero-photo {
     width: 100%;
     max-width: 90vw;
-    margin-top: 8px;
+    margin-top: 0;
   }
 
   /* ─── Cap general: ningun padding/margin vertical > 60px ─── */
