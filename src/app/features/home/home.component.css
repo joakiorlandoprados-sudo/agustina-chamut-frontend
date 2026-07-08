@@ -1102,9 +1102,88 @@ h2 em,
   max-width: 28rem;
 }
 
-/* ─── Mobile (≤ 767px) — foto reducida, nav en hamburguesa ─── */
+/* ─── Mobile (≤ 768px) — hero compacto, foto reducida, nav en hamburguesa ───
+   Notas de spacing mobile:
+   - El hero en mobile no necesita 100vh (deja demasiado aire). Lo bajamos
+     a min-height: auto para que crezca con su contenido, con padding-top y
+     padding-bottom de 40px.
+   - Gaps internos del hero reducidos al maximo indicado (logo→h1 ≤16px,
+     h1→tagline ≤8px, tagline→botones ≤24px, botones→flecha ≤24px).
+   - La imagen circular de constelaciones (`.hero-photo`) vive dentro del
+     hero visual; en mobile la limitamos a 85vw y removemos cualquier
+     margin-top excesivo.
+   - Cap general: ninguna seccion del HomeComponent debe superar los 60px
+     de padding/margin vertical en mobile. Las secciones que tenian 5rem
+     (80px) se bajan a 3.5rem (56px) en eje vertical. */
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
+  /* ─── HERO compacto ─── */
+  .hero {
+    min-height: auto;
+    padding: 40px 1.5rem;
+  }
+
+  .hero-grid {
+    gap: 1.25rem;
+  }
+
+  .hero-text {
+    gap: 0.5rem;
+  }
+
+  .hero-logo {
+    margin-bottom: 0;
+  }
+
+  .hero-title {
+    margin-top: 0;
+  }
+
+  .hero-tagline {
+    margin: 0;
+  }
+
+  .hero-actions {
+    margin-top: 0.5rem;
+  }
+
+  .hero-arrow {
+    margin-top: 1rem;
+  }
+
+  /* Imagen circular de constelaciones del hero: max 85vw en mobile,
+     sin margin-top que la separe del bloque de texto. */
+  .hero-photo {
+    width: 100%;
+    max-width: 85vw;
+    margin-top: 0;
+  }
+
+  /* ─── Cap general: ningun padding/margin vertical > 60px ─── */
+  .about {
+    padding: 56px 1.5rem;
+  }
+
+  .about-inner {
+    gap: 1.5rem;
+  }
+
+  .que-es,
+  .como-funciona,
+  .faq,
+  .testimonios {
+    padding: 56px 0;
+  }
+
+  .cta-final {
+    padding: 56px 1.5rem;
+  }
+
+  .footer {
+    padding: 2.5rem 1.5rem 1.75rem;
+  }
+
+  /* ─── Resto del mobile (sin cambios respecto a la version previa) ─── */
   .about-photo {
     width: 200px;
     height: 240px;
