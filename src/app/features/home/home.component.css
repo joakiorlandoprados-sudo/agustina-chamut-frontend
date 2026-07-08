@@ -183,7 +183,10 @@ h2 em,
   .hero .hero-author,
   .hero .hero-tagline,
   .hero .hero-actions .btn,
-  .hero .hero-arrow {
+  .hero .hero-arrow,
+  .navbar-drawer,
+  .navbar-backdrop,
+  .navbar-burger-bar {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
@@ -346,6 +349,7 @@ h2 em,
   color: #fff !important;
   padding: 0.55rem 1.15rem !important;
   border-radius: 999px;
+  margin-left: auto;
   transition: background 0.2s ease, transform 0.05s ease !important;
 }
 
@@ -360,6 +364,93 @@ h2 em,
 
 .navbar-cta:active {
   transform: translateY(1px);
+}
+
+/* ─── 1. NAVBAR — Boton hamburguesa (mobile) ─── */
+
+.navbar-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 22px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.navbar-burger-bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--color-text);
+  transition: transform .2s, opacity .2s;
+}
+
+/* Burger → X: rotacion de barras cuando el navbar tiene .is-menu-open. */
+.navbar.is-menu-open .navbar-burger-bar:nth-child(1) {
+  transform: translateY(10px) rotate(45deg);
+}
+
+.navbar.is-menu-open .navbar-burger-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar.is-menu-open .navbar-burger-bar:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
+}
+
+/* ─── 1. NAVBAR — Drawer mobile y backdrop ─── */
+
+.navbar-drawer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: none;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-soft);
+  padding: 0.5rem 1.5rem 1rem;
+  z-index: 49;
+  animation: drawer-slide-down 0.2s ease-out;
+}
+
+.navbar.is-menu-open .navbar-drawer {
+  display: block;
+}
+
+.navbar-drawer a {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text);
+  text-decoration: none;
+  padding: .9rem 0;
+  border-bottom: 1px solid var(--color-terra-light);
+  transition: color .15s, background .15s;
+}
+
+.navbar-drawer a:last-child {
+  border-bottom: 0;
+}
+
+.navbar-drawer a:hover {
+  color: var(--color-terra);
+  background: rgba(232, 220, 230, 0.4);
+}
+
+.navbar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(36, 27, 34, 0.35);
+  z-index: 48;
+}
+
+@keyframes drawer-slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ─── 1. HERO ─── */
@@ -1011,7 +1102,7 @@ h2 em,
   max-width: 28rem;
 }
 
-/* ─── Mobile (≤ 767px) — foto de Agustina en formato retrato reducido ─── */
+/* ─── Mobile (≤ 767px) — foto reducida, nav en hamburguesa ─── */
 
 @media (max-width: 767px) {
   .about-photo {
@@ -1020,12 +1111,31 @@ h2 em,
     margin: 0 auto;
   }
 
-  .navbar-links a:not(.navbar-cta) {
-    display: none;
+  .navbar-brand-name {
+    font-size: 0.88rem;
+    letter-spacing: 0;
   }
 
+  .navbar-brand-logo {
+    width: 32px;
+  }
+
+  /* CTA en el header: pill mas compacto para 375px. */
+  .navbar-cta {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.85rem;
+  }
+
+  /* Hamburguesa visible solo en mobile; el .ts togglea
+     .is-menu-open y CSS rota las barras a X. */
+  .navbar-burger {
+    display: inline-flex;
+  }
+
+  /* Los anchor links de desktop se ocultan: la nav equivalente
+     vive en el drawer, montado por @if. */
   .navbar-links {
-    gap: 0;
+    display: none;
   }
 }
 
@@ -1059,6 +1169,18 @@ h2 em,
 
   .navbar-links {
     gap: 2.25rem;
+  }
+
+  /* Burger/drawer/backdrop solo aplican en mobile; el bounce-down
+     del .hero-arrow se reusa sin duplicar (oculto en desktop). */
+  .navbar-burger,
+  .navbar-drawer,
+  .navbar-backdrop {
+    display: none;
+  }
+
+  .hero-arrow {
+    display: none;
   }
 
   .about-inner {

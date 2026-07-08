@@ -1,5 +1,11 @@
-<!-- ─── NAVBAR FIJO ─── -->
-<header class="navbar" #navbar>
+<!-- ─── NAVBAR FIJO ───
+     Estructura:
+       - Brand (logo + nombre) a la izquierda.
+       - CTA "Reservar" (pill) visible SIEMPRE: en desktop vive en
+         la fila de links, en mobile queda en la fila del header.
+       - Hamburguesa visible solo en mobile; al tocarla se monta el
+         drawer (anchors) y el backdrop. -->
+<header class="navbar" #navbar [class.is-menu-open]="isMenuOpen()">
   <div class="navbar-inner">
     <a class="navbar-brand" href="#top" aria-label="Agustina Chamut · Inicio">
       <img
@@ -10,13 +16,43 @@
       <span class="navbar-brand-name">Agustina Chamut</span>
     </a>
 
+    <!-- CTA fuera de .navbar-links para que no quede oculto por
+         el selector `:not(.navbar-cta)` del media query mobile. -->
+    <a class="navbar-cta" routerLink="/reservar" (click)="closeMenu()">
+      Reservar
+    </a>
+
+    <button
+      type="button"
+      class="navbar-burger"
+      [attr.aria-expanded]="isMenuOpen()"
+      aria-controls="navbar-drawer"
+      aria-label="Abrir menú de navegación"
+      (click)="toggleMenu()"
+    >
+      <span class="navbar-burger-bar"></span>
+      <span class="navbar-burger-bar"></span>
+      <span class="navbar-burger-bar"></span>
+    </button>
+
+    <!-- Links de escritorio: en mobile se ocultan con CSS pero
+         siguen en el DOM para no perder foco/teclado. -->
     <nav class="navbar-links" aria-label="Navegación principal">
-      <a href="#sobre-mi">Sobre mí</a>
-      <a href="#que-son">¿Qué son?</a>
-      <a href="#sesion">Sesión</a>
-      <a class="navbar-cta" routerLink="/reservar">Reservar</a>
+      <a href="#sobre-mi" (click)="closeMenu()">Sobre mí</a>
+      <a href="#que-son" (click)="closeMenu()">¿Qué son?</a>
+      <a href="#sesion" (click)="closeMenu()">Sesión</a>
     </nav>
   </div>
+
+  @if (isMenuOpen()) {
+    <div class="navbar-backdrop" (click)="closeMenu()" aria-hidden="true"></div>
+
+    <nav id="navbar-drawer" class="navbar-drawer" aria-label="Navegación mobile">
+      <a href="#sobre-mi" (click)="closeMenu()">Sobre mí</a>
+      <a href="#que-son" (click)="closeMenu()">¿Qué son?</a>
+      <a href="#sesion" (click)="closeMenu()">Sesión</a>
+    </nav>
+  }
 </header>
 
 <!-- ─── 1. HERO ─── -->

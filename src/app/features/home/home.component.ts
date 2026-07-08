@@ -1,10 +1,12 @@
 import {
   AfterViewInit,
   Component,
+  effect,
   ElementRef,
   HostListener,
   OnDestroy,
   QueryList,
+  signal,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
@@ -74,6 +76,42 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   private observer?: IntersectionObserver;
   private readonly observerThreshold = 0.15;
 
+  /**
+   * Estado del menú mobile (drawer). `true` solo cuando el usuario
+   * tocó la hamburguesa y el drawer está abierto. En desktop nunca
+   * llega a `true` porque los listeners de Escape / resize lo cierran
+   * apenas se cruza el breakpoint de 768px.
+   *
+   * Manejo del scroll-lock: un `effect` sincroniza este signal con
+   * `document.body.style.overflow`. Guardamos el valor original del
+   * body la primera vez que abrimos para restaurarlo exactamente al
+   * cerrar (puede haber sido `"hidden"` por otro componente, aunque
+   * hoy no es el caso).
+   */
+  protected readonly isMenuOpen = signal(false);
+
+  private originalBodyOverflow: string | null = null;
+
+  constructor() {
+    // Sincroniza scroll-lock con el estado del menú. Se ejecuta en
+    // zona Angular, asi que corre dentro del ciclo de deteccion de
+    // cambios (no hace falta cleanup manual del effect porque vive
+    // lo que vive el component).
+    effect(() => {
+      const open = this.isMenuOpen();
+      if (typeof document === 'undefined') return;
+      if (open) {
+        if (this.originalBodyOverflow === null) {
+          this.originalBodyOverflow = document.body.style.overflow;
+        }
+        document.body.style.overflow = 'hidden';
+      } else if (this.originalBodyOverflow !== null) {
+        document.body.style.overflow = this.originalBodyOverflow;
+        this.originalBodyOverflow = null;
+      }
+    });
+  }
+
   ngAfterViewInit(): void {
     // Respeta prefers-reduced-motion y fallback sin IntersectionObserver:
     // marcamos todo como visible al instante para no bloquear contenido.
@@ -129,6 +167,42 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
+   * Click en el boton hamburguesa. Alterna el estado del drawer.
+   * El effect() del constructor se ocupa del scroll-lock.
+   */
+  protected toggleMenu(): void {
+    this.isMenuOpen.update((v) => !v);
+  }
+
+  /**
+   * Cierra el drawer. Se invoca desde: click en backdrop, click en
+   * un link del drawer, Escape, resize por encima de 768px. Es
+   * idempotente (si ya esta cerrado, no hace nada visible).
+   */
+  protected closeMenu(): void {
+    if (this.isMenuOpen()) {
+      this.isMenuOpen.set(false);
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.closeMenu();
+  }
+
+  /**
+   * Si el usuario rota el telefono o expande DevTools y el viewport
+   * pasa a >= 768px con el drawer abierto, lo cerramos para que no
+   * quede un menu fantasma invisible en DOM encima de la UI desktop.
+   */
+  @HostListener('window:resize')
+  onResize(): void {
+    if (this.isMenuOpen() && window.innerWidth >= 768) {
+      this.closeMenu();
+    }
+  }
+
+  /**
    * Marca el navbar como `.is-scrolled` cuando se supera un umbral pequeño
    * (24px) para que aparezca el fondo crema con sombra apenas el usuario
    * empieza a bajar. Encima del umbral se quita para que el hero se vea
@@ -143,5 +217,12 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.observer?.disconnect();
+    // Defensa: si el component se destruye con el drawer abierto
+    // (cambio de ruta, hot reload, etc.) restauro el body para no
+    // dejar la pagina bloqueada para scrollear.
+    if (this.originalBodyOverflow !== null) {
+      document.body.style.overflow = this.originalBodyOverflow;
+      this.originalBodyOverflow = null;
+    }
   }
 }
