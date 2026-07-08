@@ -1120,7 +1120,9 @@ h2 em,
   /* ─── HERO compacto ─── */
   .hero {
     min-height: auto;
-    padding: 40px 1.5rem;
+    /* 60px de navbar fijo + 20px de respiro para que el titulo no
+       quede pegado debajo del header. */
+    padding: 80px 1.5rem 40px;
   }
 
   .hero-grid {
@@ -1147,16 +1149,24 @@ h2 em,
     margin-top: 0.5rem;
   }
 
-  .hero-arrow {
-    margin-top: 1rem;
+  /* Contenedor de la imagen: en mobile removemos el min-height (280px)
+     que era el principal responsable del hueco gigante entre la
+     tagline y la imagen circular. */
+  .hero-visual {
+    min-height: 0;
   }
 
-  /* Imagen circular de constelaciones del hero: max 85vw en mobile,
-     sin margin-top que la separe del bloque de texto. */
+  .hero-arrow {
+    margin-top: 16px;
+  }
+
+  /* Imagen circular de constelaciones del hero: max 90vw en mobile,
+     con margin-top de 24px para separarla visualmente del bloque
+     de texto. */
   .hero-photo {
     width: 100%;
-    max-width: 85vw;
-    margin-top: 0;
+    max-width: 90vw;
+    margin-top: 24px;
   }
 
   /* ─── Cap general: ningun padding/margin vertical > 60px ─── */
