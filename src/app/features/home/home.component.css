@@ -1122,7 +1122,7 @@ h2 em,
     min-height: auto;
     /* 60px de navbar fijo + 20px de respiro para que el titulo no
        quede pegado debajo del header. */
-    padding: 80px 1.5rem 40px;
+    padding: 80px 1.5rem 16px;
   }
 
   .hero-grid {
@@ -1157,7 +1157,8 @@ h2 em,
   }
 
   .hero-arrow {
-    margin-top: 16px;
+    display: inline-flex;
+    margin-top: 8px;
   }
 
   /* Imagen circular de constelaciones del hero: max 90vw en mobile,
