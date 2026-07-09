@@ -1122,7 +1122,7 @@ h2 em,
     min-height: auto;
     /* 60px de navbar fijo + 20px de respiro para que el titulo no
        quede pegado debajo del header. */
-    padding: 60px 1.5rem 16px;
+    padding: 60px 1.5rem 32px;
   }
 
   .hero-grid {
