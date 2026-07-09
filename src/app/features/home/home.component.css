@@ -1122,7 +1122,7 @@ h2 em,
     min-height: auto;
     /* 60px de navbar fijo + 20px de respiro para que el titulo no
        quede pegado debajo del header. */
-    padding: 80px 1.5rem 16px;
+    padding: 60px 1.5rem 16px;
   }
 
   .hero-grid {
@@ -1146,7 +1146,7 @@ h2 em,
   }
 
   .hero-actions {
-    margin-top: 0.5rem;
+    margin-top: 0;
   }
 
   /* Contenedor de la imagen: en mobile removemos el min-height (280px)
@@ -1165,7 +1165,8 @@ h2 em,
      margin-top 0 para que quede pegada al bloque de texto. */
   .hero-photo {
     width: 100%;
-    max-width: 90vw;
+    max-width: 70vw;
+    aspect-ratio: 1 / 1;
     margin-top: 0;
   }
 
