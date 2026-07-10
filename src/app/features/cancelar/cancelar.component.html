@@ -6,6 +6,22 @@
         <h2>Procesando cancelación...</h2>
         <p class="muted">Esto puede tardar unos segundos.</p>
       }
+      @case ('confirm') {
+        <div class="icon icon--warn" aria-hidden="true">!</div>
+        <h2>¿Confirmar cancelación?</h2>
+        @if (slot(); as s) {
+          <p>¿Querés cancelar tu turno del <strong>{{ s.date }}</strong> a las <strong>{{ s.startTime }}</strong>?</p>
+        }
+        <p class="muted">Esta acción no se puede deshacer.</p>
+        <button type="button" class="btn" (click)="onConfirmCancel()">
+          Sí, cancelar mi turno
+        </button>
+      }
+      @case ('submitting') {
+        <div class="spinner" aria-hidden="true"></div>
+        <h2>Procesando cancelación...</h2>
+        <p class="muted">Esto puede tardar unos segundos.</p>
+      }
       @case ('success') {
         <div class="icon icon--ok" aria-hidden="true">✓</div>
         <h2>Tu turno fue cancelado</h2>
